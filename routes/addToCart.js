@@ -1,11 +1,33 @@
 const express = require('express');
+
 const Products = require('../models/Products');
 const User = require('../models/User');
-const Cart = require('../models/Cart');
-const moment = require('moment');
 
+const moment = require('moment');
+const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
 
-router.post('/:id', async (req, res) => {});
+router.post('/:id', async (req, res) => {
+	console.log('comming');
+	const checkUser = await User.findOne({ userId: req.body.user });
+	if (checkUser) {
+		const lookItem = await Products.findById(req.params.id);
+		checkUser.cart.push(lookItem.id);
+		const userCart = await checkUser.save();
+		return res.json(userCart);
+	} else {
+		const lookItem = await Products.findById(req.params.id);
+
+		const getID = uuidv4();
+
+		const newUser = new User({
+			userId: getID,
+			cart: lookItem.id,
+		});
+		const user = await newUser.save();
+		console.log(user);
+		return res.json(user);
+	}
+});
 
 module.exports = router;
