@@ -52,10 +52,7 @@ const Products = () => {
 											<div className='caption cntr'>
 												<p>{item.itemname}</p>
 												<p>
-													<strong>
-														{' '}
-														${item.unitprice}
-													</strong>
+													<strong> </strong>
 												</p>
 												<h4>
 													<Link
