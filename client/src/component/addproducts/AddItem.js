@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import API from '../../api/api';
-
+import $ from 'jquery';
 const Additem = () => {
 	const [fileStatus, setFileStatus] = useState({
 		selectedFile: null,
@@ -38,49 +38,32 @@ const Additem = () => {
 				fileStatus.selectedFile.name,
 			);
 			console.log(data);
-			const res = await API.post('/addproduct/image', data, {
+			const response = await API.post('/addproduct/image', data, {
 				headers: {
 					accept: 'application/json',
 					'Accept-Language': 'en-US,en;q=0.8',
 					'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
 				},
 			});
-			console.log(res);
-			// .then((response) => {
-			// 	if (200 === response.status) {
-			// 		// If file size is larger than expected.
-			// 		if (response.data.error) {
-			// 			if (
-			// 				'LIMIT_FILE_SIZE' === response.data.error.code
-			// 			) {
-			// 				this.ocShowAlert('Max size: 2MB', 'red');
-			// 			} else {
-			// 				console.log(response.data); // If not the given file type
-			// 				this.ocShowAlert(response.data.error, 'red');
-			// 			}
-			// 		} else {
-			// 			// Success
-			// 			let fileName = response.data;
-			// 			console.log('fileName', fileName);
-			// 			setitemData({ itemImageURL: fileName.location });
-			// 			const body = fileName.location;
-			// 			const config = {
-			// 				headers: {
-			// 					'Content-Type': 'application/json',
-			// 				},
-			// 			};
-			// 			API.post('/addproduct', body, config);
-			// 			console.log(itemData);
-			// 		}
-			// }
-			// })
-			// .catch((error) => {
-			// 	// If another error
-			// 	this.ocShowAlert(error, 'red');
-			// });
+
+			console.log(response);
+			if (200 === response.status) {
+				// If file size is larger than expected.
+				if (response.data.error) {
+					if ('LIMIT_FILE_SIZE' === response.data.error.code) {
+						ocShowAlert('Max size: 2MB', 'red');
+					} else {
+						console.log(response.data); // If not the given file type
+						ocShowAlert(response.data.error, 'red');
+					}
+				} else {
+					// Success
+
+					ocShowAlert('Your Item is Uploaded', '#3089cf');
+				}
+			}
 		} else {
-			// if file not selected throw error
-			// this.ocShowAlert('Please upload file', 'red');
+			ocShowAlert('Please upload file', 'red');
 			console.log('please upload a file ');
 		}
 	};
@@ -88,7 +71,19 @@ const Additem = () => {
 		e.preventDefault();
 		singleFileUploadHandler();
 	};
-
+	const ocShowAlert = (message, background = '#3089cf') => {
+		let alertContainer = document.querySelector('#oc-alert-container'),
+			alertEl = document.createElement('div'),
+			textNode = document.createTextNode(message);
+		alertEl.setAttribute('class', 'oc-alert-pop-up');
+		$(alertEl).css('background', background);
+		alertEl.appendChild(textNode);
+		alertContainer.appendChild(alertEl);
+		setTimeout(function () {
+			$(alertEl).fadeOut('slow');
+			$(alertEl).remove();
+		}, 3000);
+	};
 	return (
 		<Fragment>
 			<br />
@@ -98,6 +93,7 @@ const Additem = () => {
 			<h3> Welocme Admin Please Add an Item </h3>
 			<hr className='soft' />
 			<div className='well'>
+				<div id='oc-alert-container'></div>
 				<form className='form-horizontal' onSubmit={(e) => sendItem(e)}>
 					<h3>Iem Details </h3>
 
