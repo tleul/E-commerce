@@ -1,6 +1,12 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getusercart } from './../../actions/getUserCart';
 
-const Cart = () => {
+import { PropTypes } from 'prop-types';
+const Cart = ({ getusercart }) => {
+	useEffect(() => {
+		getusercart();
+	});
 	return (
 		<Fragment>
 			<br />
@@ -153,5 +159,7 @@ const Cart = () => {
 		</Fragment>
 	);
 };
-
-export default Cart;
+Cart.propTypes = {
+	getusercart: PropTypes.func.isRequired,
+};
+export default connect(null, { getusercart })(Cart);

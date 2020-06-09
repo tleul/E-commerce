@@ -9,8 +9,6 @@ export default function (state = initialState, action) {
 	const { type, payload } = action;
 	switch (type) {
 		case ADDTOCART:
-			localStorage.setItem('user', payload.userId);
-
 			return {
 				...state,
 
