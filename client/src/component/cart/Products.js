@@ -19,6 +19,9 @@ const Products = () => {
 		getProducts();
 		console.log(productList);
 	}, []);
+	const addtocart = (pId, e) => {
+		console.log(pId);
+	};
 	return (
 		productList.loading && (
 			<Fragment>
@@ -52,12 +55,21 @@ const Products = () => {
 											<div className='caption cntr'>
 												<p>{item.itemname}</p>
 												<p>
-													<strong> </strong>
+													<strong>
+														{' '}
+														${item.unitprice}
+													</strong>
 												</p>
 												<h4>
 													<Link
 														className='shopBtn'
 														to='#'
+														onClick={(e) =>
+															addtocart(
+																item._id,
+																e,
+															)
+														}
 														title='add to cart'>
 														{' '}
 														Add to cart{' '}
