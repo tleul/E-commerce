@@ -1,6 +1,0 @@
-{
-	"mongoURI": "mongodb+srv://ecommerce:Edenlove@ecommerce-qhwkp.mongodb.net/<dbname>?retryWrites=true&w=majority",
-	"accessKeyId": "",
-	"secretAccessKey": "",
-	"Bucket": "leulbucket"
-}
