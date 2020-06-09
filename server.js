@@ -18,6 +18,7 @@ app.get('/', (req, res) => {
 });
 app.use('/api/addproduct', require('./routes/addProducts'));
 app.use('/api/getproduct', require('./routes/getProducts'));
+app.use('/api/addtocart', require('./routes/addToCart'));
 // app.use('/addcart', require('./routes/addToCart'));
 
 PORT = process.env.PORT || 5000;

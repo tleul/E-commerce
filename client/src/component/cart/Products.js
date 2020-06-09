@@ -1,29 +1,23 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import API from '../../api/api';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const Products = () => {
-	const [productList, setProductList] = useState({
-		loading: false,
-		products: null,
-	});
-	const getProducts = async () => {
-		const res = await API.get('/getproduct');
-		console.log(res.data);
-		setProductList({
-			loading: true,
-			products: res.data,
-		});
-	};
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { getProducts } from './../../actions/addProducts';
+
+import { addtocart } from './../../actions/addtocart';
+
+const Products = ({ getProducts, productList, loading, addtocart }) => {
 	useEffect(() => {
 		getProducts();
-		console.log(productList);
 	}, []);
-	const addtocart = (pId, e) => {
-		console.log(pId);
+	const additem = (id) => {
+		addtocart(id);
 	};
+
+	console.log(productList);
 	return (
-		productList.loading && (
+		loading && (
 			<Fragment>
 				<br />
 				<br />
@@ -32,8 +26,8 @@ const Products = () => {
 					<h3>Our Products </h3>
 					<div className='row-fluid'>
 						<ul className='thumbnails'>
-							{productList.loading &&
-								productList.products.map((item) => (
+							{loading &&
+								productList.map((item) => (
 									<li key={item._id} className='span4'>
 										<div className='thumbnail'>
 											<Link
@@ -65,10 +59,7 @@ const Products = () => {
 														className='shopBtn'
 														to='#'
 														onClick={(e) =>
-															addtocart(
-																item._id,
-																e,
-															)
+															additem(item._id, e)
 														}
 														title='add to cart'>
 														{' '}
@@ -100,4 +91,14 @@ const Products = () => {
 		)
 	);
 };
-export default Products;
+Products.propTypes = {
+	getProducts: PropTypes.func.isRequired,
+	productList: PropTypes.array,
+	loading: PropTypes.bool.isRequired,
+	addtocart: PropTypes.func.isRequired,
+};
+const mapStateToProps = (state) => ({
+	productList: state.products.products,
+	loading: state.products.loading,
+});
+export default connect(mapStateToProps, { getProducts, addtocart })(Products);

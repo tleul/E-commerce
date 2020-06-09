@@ -1,20 +1,12 @@
 const mongoose = require('mongoose');
-import Products from './../client/src/component/cart/Products';
 
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
 	userId: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: String,
 	},
-	cart: [
-		{
-			itemId: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: Product,
-			},
-		},
-	],
+	cart: [],
 });
 
-module.exports = User = mongoose.model('cart', UserSchema);
+module.exports = User = mongoose.model('users', UserSchema);
