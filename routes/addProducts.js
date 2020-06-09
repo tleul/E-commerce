@@ -11,15 +11,15 @@ const router = express.Router();
 //  PROFILE IMAGE STORING STARTS
 // aws-sdk npm
 const s3 = new aws.S3({
-	accessKeyId: 'AKIAZMFRIIRS65IWRP7C',
-	secretAccessKey: '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',
-	Bucket: 'leulbucket',
+	accessKeyId: '',
+	secretAccessKey: '',
+	Bucket: '',
 });
 // Single Upload
 const profileImgUpload = multer({
 	storage: multerS3({
 		s3: s3,
-		bucket: 'leulbucket',
+		bucket: '',
 		acl: 'public-read',
 		key: function (req, file, cb) {
 			cb(
