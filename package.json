@@ -12,11 +12,15 @@
 	"author": "Leul",
 	"license": "ISC",
 	"dependencies": {
+		"aws-sdk": "^2.692.0",
 		"concurrently": "^5.2.0",
 		"config": "^3.3.1",
 		"express": "^4.17.1",
 		"moment": "^2.24.0",
 		"mongoose": "^5.9.10",
-		"nodemon": "^2.0.4"
+		"multer": "^1.4.2",
+		"multer-s3": "^2.9.0",
+		"nodemon": "^2.0.4",
+		"path": "^0.12.7"
 	}
 }
