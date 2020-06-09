@@ -1,39 +1,17 @@
 const express = require('express');
-const Products = require('../models/Products')
+const Products = require('../models/Products');
 
 const router = express.Router();
 
+//POST REQUEST iTEM details
+router.post('/', async (req, res) => {
+	const { itemdescription, itemnameunitprice, itemImageURL } = req.body;
 
-// draft add product  route
+	const { itemImage } = req.file;
+	try {
+	} catch (err) {
+		console.log(err);
+	}
+});
 
-
-router.post('/', async (req,res) => {
-    const {name, price, image, shortDescription } = req.body;
-    try {
-  
-    
-
-        const products = new Products({
-
-            name,
-            price,
-            image,
-            shortDescription
-        })
-
-
-        await products.save();
-        
-        res.json(products)
-      
-    } catch (err) {
-
-        console.error(err.message);
-        res.status(400).json('Server Error');
-        
-    }    
-
-
-})
-
-module.exports = router
+module.exports = router;

@@ -1,17 +1,22 @@
 {
-  "name": "e-commerce",
-  "version": "1.0.0",
-  "description": "E-commerce app using nodejs",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Leul",
-  "license": "ISC",
-  "dependencies": {
-    "config": "^3.3.1",
-    "express": "^4.17.1",
-    "moment": "^2.24.0",
-    "mongoose": "^5.9.10"
-  }
+	"name": "e-commerce",
+	"version": "1.0.0",
+	"description": "E-commerce app using nodejs",
+	"main": "index.js",
+	"scripts": {
+		"start": "node server",
+		"server": "nodemon server",
+		"client": "npm start --prefix client",
+		"dev": "concurrently \"npm run server\" \"npm run client\""
+	},
+	"author": "Leul",
+	"license": "ISC",
+	"dependencies": {
+		"concurrently": "^5.2.0",
+		"config": "^3.3.1",
+		"express": "^4.17.1",
+		"moment": "^2.24.0",
+		"mongoose": "^5.9.10",
+		"nodemon": "^2.0.4"
+	}
 }
