@@ -89,8 +89,8 @@ router.post('/image', async (req, res) => {
 					unitprice,
 					itemImageURL: imageLocation,
 				});
-				const res = await newProduct.save();
-				res.json(res);
+				const prod = await newProduct.save();
+				res.json(prod);
 			}
 		}
 	});
