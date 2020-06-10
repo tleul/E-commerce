@@ -7,15 +7,21 @@ import { getProducts } from './../../actions/addProducts';
 
 import { addtocart } from './../../actions/addtocart';
 
-const Products = ({ getProducts, productList, loading, addtocart }) => {
+const Products = ({
+	getProducts,
+	productList,
+	loading,
+	addtocart,
+	userBucket,
+}) => {
 	useEffect(() => {
 		getProducts();
 	}, []);
 	const additem = (id) => {
-		addtocart(id);
+		const userItem = userBucket.filter((item) => item._id == id);
+		console.log(userItem);
 	};
 
-	console.log(productList);
 	return (
 		loading && (
 			<Fragment>
@@ -95,10 +101,12 @@ Products.propTypes = {
 	getProducts: PropTypes.func.isRequired,
 	productList: PropTypes.array,
 	loading: PropTypes.bool.isRequired,
+	userBucket: PropTypes.array,
 	addtocart: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
 	productList: state.products.products,
 	loading: state.products.loading,
+	userBucket: state.cart.usercart,
 });
 export default connect(mapStateToProps, { getProducts, addtocart })(Products);

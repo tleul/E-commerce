@@ -1,6 +1,5 @@
-import { ADDTOCART } from '../actions/type';
+import { ADDTOCART, EMPTYCART, GETUSERCART } from '../actions/type';
 
-import { GETUSERCART } from './../actions/type';
 const initialState = {
 	loading: false,
 	usercart: null,
@@ -18,10 +17,13 @@ export default function (state = initialState, action) {
 			};
 		case GETUSERCART:
 			return {
-				...state,
-
 				loading: true,
 				usercart: payload,
+			};
+		case EMPTYCART:
+			return {
+				loading: true,
+				usercart: null,
 			};
 
 		default:

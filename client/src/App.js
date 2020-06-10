@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './component/Home';
 import './App.css';
@@ -8,7 +8,12 @@ import Cart from './component/cart/Cart';
 import Additem from './component/addproducts/AddItem';
 import store from './store';
 import { Provider } from 'react-redux';
+
+import { getusercart } from './actions/getUserCart';
 function App() {
+	useEffect(() => {
+		store.dispatch(getusercart());
+	}, []);
 	return (
 		<Provider store={store}>
 			<Router>

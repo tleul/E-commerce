@@ -6,8 +6,8 @@ import { PropTypes } from 'prop-types';
 const Cart = ({ getusercart, loading, userBucket }) => {
 	useEffect(() => {
 		getusercart();
+		console.log('run');
 	}, []);
-	console.log(userBucket);
 
 	return (
 		loading && (
@@ -38,55 +38,56 @@ const Cart = ({ getusercart, loading, userBucket }) => {
 							</tr>
 						</thead>
 						<tbody>
-							{userBucket.map((useritem) => (
-								<tr key={useritem._id}>
-									<td>
-										<img
-											width='100'
-											src={useritem.itemImageURL}
-											alt=''
-										/>
-									</td>
-									<td>{useritem.itemdescription}</td>
-									<td> - </td>
-									<td>
-										<span className='shopBtn'>
-											<span className='icon-ok'></span>
-										</span>
-									</td>
-									<td>${useritem.unitprice}</td>
+							{loading &&
+								userBucket.map((useritem) => (
+									<tr key={useritem._id}>
+										<td>
+											<img
+												width='100'
+												src={useritem.itemImageURL}
+												alt=''
+											/>
+										</td>
+										<td>{useritem.itemdescription}</td>
+										<td> - </td>
+										<td>
+											<span className='shopBtn'>
+												<span className='icon-ok'></span>
+											</span>
+										</td>
+										<td>${useritem.unitprice}</td>
 
-									<td>
-										<input
-											className='span1'
-											style={{ maxWidth: 34 }}
-											placeholder='1'
-											id='appendedInputButtons'
-											size='16'
-											type='text'
-										/>
-										<div className='input-append'>
-											<button
-												className='btn btn-mini'
-												type='button'>
-												-
-											</button>
-											<button
-												className='btn btn-mini'
-												type='button'>
-												{' '}
-												+{' '}
-											</button>
-											<button
-												className='btn btn-mini btn-danger'
-												type='button'>
-												<span className='icon-remove'></span>
-											</button>
-										</div>
-									</td>
-									<td>${useritem.unitprice}</td>
-								</tr>
-							))}
+										<td>
+											<input
+												className='span1'
+												style={{ maxWidth: 34 }}
+												placeholder='1'
+												id='appendedInputButtons'
+												size='16'
+												type='text'
+											/>
+											<div className='input-append'>
+												<button
+													className='btn btn-mini'
+													type='button'>
+													-
+												</button>
+												<button
+													className='btn btn-mini'
+													type='button'>
+													{' '}
+													+{' '}
+												</button>
+												<button
+													className='btn btn-mini btn-danger'
+													type='button'>
+													<span className='icon-remove'></span>
+												</button>
+											</div>
+										</td>
+										<td>${useritem.unitprice}</td>
+									</tr>
+								))}
 
 							<tr>
 								<td colSpan='6' className='alignR'>
@@ -98,21 +99,48 @@ const Cart = ({ getusercart, loading, userBucket }) => {
 								<td colSpan='6' className='alignR'>
 									Discount:{' '}
 								</td>
-								<td> $448.42</td>
+								<td> $SOON</td>
 							</tr>
 							<tr>
 								<td colSpan='6' className='alignR'>
-									Tax:{' '}
+									Tax (8%):{' '}
 								</td>
-								<td> $448.42</td>
+								<td>
+									{' '}
+									$
+									{userBucket.reduce(
+										(acc, item) => acc + item.unitprice,
+										0,
+									) -
+										0.8 *
+											userBucket.reduce(
+												(acc, item) =>
+													acc + item.unitprice,
+												0,
+											)}
+								</td>
 							</tr>
 							<tr>
 								<td colSpan='6' className='alignR'>
-									Total products:{' '}
+									Total :{' '}
 								</td>
 								<td className='label label-primary'>
 									{' '}
-									$448.42
+									$
+									{userBucket.reduce(
+										(acc, item) => acc + item.unitprice,
+										0,
+									) +
+										userBucket.reduce(
+											(acc, item) => acc + item.unitprice,
+											0,
+										) -
+										0.8 *
+											userBucket.reduce(
+												(acc, item) =>
+													acc + item.unitprice,
+												0,
+											)}
 								</td>
 							</tr>
 						</tbody>
