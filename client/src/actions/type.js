@@ -1,3 +1,4 @@
 export const PRODUCTADDED = 'PRODUCTADDED';
 export const ADDTOCART = 'ADDTOCART';
 export const GETUSERCART = 'GETUSERCART';
+export const EMPTYCART = 'EMPTYCART';

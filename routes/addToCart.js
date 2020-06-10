@@ -10,6 +10,7 @@ const router = express.Router();
 router.post('/:id', async (req, res) => {
 	console.log(req.body.user);
 	const checkUser = await User.findOne({ userId: req.body.user });
+
 	if (checkUser) {
 		console.log('we got a user');
 		const lookItem = await Products.findById(req.params.id);
