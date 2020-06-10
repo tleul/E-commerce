@@ -9,8 +9,7 @@ const router = express.Router();
 
 router.get('/:id', async (req, res) => {
 	const userCart = await User.findOne({ userId: req.params.id });
-
-	console.log(userCart.cart);
+	res.json(userCart.cart);
 });
 
 module.exports = router;

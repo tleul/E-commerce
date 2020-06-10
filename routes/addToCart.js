@@ -13,7 +13,7 @@ router.post('/:id', async (req, res) => {
 	if (checkUser) {
 		console.log('we got a user');
 		const lookItem = await Products.findById(req.params.id);
-		checkUser.cart.push(lookItem.id);
+		checkUser.cart.push(lookItem);
 		const userCart = await checkUser.save();
 		console.log(userCart);
 		return res.json(userCart);
@@ -24,7 +24,7 @@ router.post('/:id', async (req, res) => {
 
 		const newUser = new User({
 			userId: getID,
-			cart: lookItem.id,
+			cart: lookItem,
 		});
 		const user = await newUser.save();
 		console.log(user);

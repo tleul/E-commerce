@@ -5,5 +5,8 @@ export const getusercart = () => async (dispatch) => {
 	const userID = localStorage.getItem('user');
 
 	const userCart = await api.get(`/getusercart/${userID}`);
-	console.log(userCart);
+	dispatch({
+		type: GETUSERCART,
+		payload: userCart.data,
+	});
 };
