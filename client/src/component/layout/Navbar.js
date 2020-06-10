@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { getusercart } from './../../actions/getUserCart';
 import { PropTypes } from 'prop-types';
 const Navbar = ({ getusercart, userBucket, loading }) => {
-	// useEffect(() => {
-	// 	getusercart();
-	// }, [getusercart]);
+	useEffect(() => {
+		getusercart();
+	}, [getusercart]);
 
 	return (
 		<Fragment>
@@ -44,11 +44,27 @@ const Navbar = ({ getusercart, userBucket, loading }) => {
 							</Link>
 							<Link to='/cart'>
 								<span className='icon-shopping-cart'></span>{' '}
-								{loading && userBucket.length}
+								{loading && userBucket.cart.length}
 								Item(s) -{' '}
 								<span className='badge badge-warning'>
 									{' '}
 									$
+									{loading &&
+										userBucket.cart.reduce(
+											(acc, item) => acc + item.unitprice,
+											0,
+										) +
+											userBucket.cart.reduce(
+												(acc, item) =>
+													acc + item.unitprice,
+												0,
+											) -
+											0.8 *
+												userBucket.cart.reduce(
+													(acc, item) =>
+														acc + item.unitprice,
+													0,
+												)}
 									{/* {loading &&
 										userBucket.reduce(
 											(acc, item) => acc + item.unitprice,
@@ -75,8 +91,10 @@ const Navbar = ({ getusercart, userBucket, loading }) => {
 	);
 };
 Navbar.propTypes = {
-	userBucket: PropTypes.array,
+	userBucket: PropTypes.object,
+
 	getusercart: PropTypes.func.isRequired,
+	loading: PropTypes.bool.isRequired,
 };
 const mapStateToProps = (state) => ({
 	userBucket: state.cart.usercart,

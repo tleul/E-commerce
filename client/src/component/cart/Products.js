@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getProducts } from './../../actions/addProducts';
-
+import { updateQuantity } from './../../actions/addtocart';
 import { addtocart } from './../../actions/addtocart';
 
 const Products = ({
@@ -13,13 +13,19 @@ const Products = ({
 	loading,
 	addtocart,
 	userBucket,
+	updateQuantity,
 }) => {
 	useEffect(() => {
 		getProducts();
 	}, []);
+
 	const additem = (id) => {
-		const userItem = userBucket.filter((item) => item._id == id);
-		console.log(userItem);
+		if (userBucket.cart) {
+			const check = userBucket.cart.filter((item) => item._id == id);
+			check[0].qty = check[0].qty + 1;
+			console.log(check);
+			updateQuantity(id, check);
+		}
 	};
 
 	return (
@@ -34,7 +40,7 @@ const Products = ({
 						<ul className='thumbnails'>
 							{loading &&
 								productList.map((item) => (
-									<li key={item._id} className='span4'>
+									<li key={item._id} className='span2'>
 										<div className='thumbnail'>
 											<Link
 												to='#'
@@ -48,16 +54,20 @@ const Products = ({
 											</Link>
 											<Link to='#'>
 												<img
+													height='200'
+													width='100'
 													src={item.itemImageURL}
 													alt=''
 												/>
 											</Link>
 											<div className='caption cntr'>
 												<p>{item.itemname}</p>
+
 												<p>
 													<strong>
 														{' '}
-														${item.unitprice}
+														unit price: $
+														{item.unitprice}
 													</strong>
 												</p>
 												<h4>
@@ -98,10 +108,11 @@ const Products = ({
 	);
 };
 Products.propTypes = {
+	userBucket: PropTypes.object,
 	getProducts: PropTypes.func.isRequired,
 	productList: PropTypes.array,
 	loading: PropTypes.bool.isRequired,
-	userBucket: PropTypes.array,
+	updateQuantity: PropTypes.func.isRequired,
 	addtocart: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
@@ -109,4 +120,8 @@ const mapStateToProps = (state) => ({
 	loading: state.products.loading,
 	userBucket: state.cart.usercart,
 });
-export default connect(mapStateToProps, { getProducts, addtocart })(Products);
+export default connect(mapStateToProps, {
+	getProducts,
+	addtocart,
+	updateQuantity,
+})(Products);

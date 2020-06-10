@@ -5,6 +5,10 @@ const app = express();
 dbConnect();
 app.use(express.json({ extended: false }));
 app.use((req, res, next) => {
+	res.header(
+		'Access-Control-Allow-Methods',
+		'PUT, POST, GET, DELETE, OPTIONS',
+	);
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header(
 		'Access-Control-Allow-Headers',

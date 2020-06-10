@@ -2,7 +2,7 @@ import { ADDTOCART, EMPTYCART, GETUSERCART } from '../actions/type';
 
 const initialState = {
 	loading: false,
-	usercart: null,
+	usercart: {},
 };
 
 export default function (state = initialState, action) {
@@ -16,13 +16,16 @@ export default function (state = initialState, action) {
 				usercart: payload,
 			};
 		case GETUSERCART:
+			console.log(payload);
 			return {
+				...state,
 				loading: true,
 				usercart: payload,
 			};
 		case EMPTYCART:
 			return {
-				loading: true,
+				...state,
+				loading: false,
 				usercart: null,
 			};
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getusercart } from './../../actions/getUserCart';
 
 import { PropTypes } from 'prop-types';
-const Cart = ({ getusercart, loading, userBucket }) => {
+const Cart = ({ getusercart, loading, userBucket: { cart } }) => {
 	useEffect(() => {
 		getusercart();
 		console.log('run');
@@ -21,7 +21,8 @@ const Cart = ({ getusercart, loading, userBucket }) => {
 						Check Out{' '}
 						<small className='pull-right'>
 							{' '}
-							2 Items are in the cart{' '}
+							{cart.length}
+							Items are in the cart{' '}
 						</small>
 					</h1>
 					<hr className='soften' />
@@ -38,56 +39,48 @@ const Cart = ({ getusercart, loading, userBucket }) => {
 							</tr>
 						</thead>
 						<tbody>
-							{loading &&
-								userBucket.map((useritem) => (
-									<tr key={useritem._id}>
-										<td>
-											<img
-												width='100'
-												src={useritem.itemImageURL}
-												alt=''
-											/>
-										</td>
-										<td>{useritem.itemdescription}</td>
-										<td> - </td>
-										<td>
-											<span className='shopBtn'>
-												<span className='icon-ok'></span>
-											</span>
-										</td>
-										<td>${useritem.unitprice}</td>
+							{cart.map((useritem) => (
+								<tr key={useritem._id}>
+									<td>
+										<img
+											width='100'
+											src={useritem.itemImageURL}
+											alt=''
+										/>
+									</td>
+									<td>{useritem.itemdescription}</td>
+									<td> - </td>
+									<td>
+										<span className='shopBtn'>
+											<span className='icon-ok'></span>
+										</span>
+									</td>
+									<td>${useritem.unitprice}</td>
 
-										<td>
-											<input
-												className='span1'
-												style={{ maxWidth: 34 }}
-												placeholder='1'
-												id='appendedInputButtons'
-												size='16'
-												type='text'
-											/>
-											<div className='input-append'>
-												<button
-													className='btn btn-mini'
-													type='button'>
-													-
-												</button>
-												<button
-													className='btn btn-mini'
-													type='button'>
-													{' '}
-													+{' '}
-												</button>
-												<button
-													className='btn btn-mini btn-danger'
-													type='button'>
-													<span className='icon-remove'></span>
-												</button>
-											</div>
-										</td>
-										<td>${useritem.unitprice}</td>
-									</tr>
-								))}
+									<td>
+										<p>{useritem.qty}</p>
+										<div className='input-append'>
+											<button
+												className='btn btn-mini'
+												type='button'>
+												-
+											</button>
+											<button
+												className='btn btn-mini'
+												type='button'>
+												{' '}
+												+{' '}
+											</button>
+											<button
+												className='btn btn-mini btn-danger'
+												type='button'>
+												<span className='icon-remove'></span>
+											</button>
+										</div>
+									</td>
+									<td>${useritem.unitprice}</td>
+								</tr>
+							))}
 
 							<tr>
 								<td colSpan='6' className='alignR'>
@@ -108,12 +101,12 @@ const Cart = ({ getusercart, loading, userBucket }) => {
 								<td>
 									{' '}
 									$
-									{userBucket.reduce(
+									{cart.reduce(
 										(acc, item) => acc + item.unitprice,
 										0,
 									) -
 										0.8 *
-											userBucket.reduce(
+											cart.reduce(
 												(acc, item) =>
 													acc + item.unitprice,
 												0,
@@ -127,16 +120,16 @@ const Cart = ({ getusercart, loading, userBucket }) => {
 								<td className='label label-primary'>
 									{' '}
 									$
-									{userBucket.reduce(
+									{cart.reduce(
 										(acc, item) => acc + item.unitprice,
 										0,
 									) +
-										userBucket.reduce(
+										cart.reduce(
 											(acc, item) => acc + item.unitprice,
 											0,
 										) -
 										0.8 *
-											userBucket.reduce(
+											cart.reduce(
 												(acc, item) =>
 													acc + item.unitprice,
 												0,
@@ -154,7 +147,7 @@ const Cart = ({ getusercart, loading, userBucket }) => {
 };
 Cart.propTypes = {
 	getusercart: PropTypes.func.isRequired,
-	userBucket: PropTypes.array,
+	userBucket: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
 };
 const mapStateToProps = (state) => ({
