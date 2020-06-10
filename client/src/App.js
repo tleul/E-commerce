@@ -11,9 +11,9 @@ import { Provider } from 'react-redux';
 
 import { getusercart } from './actions/getUserCart';
 function App() {
-	useEffect(() => {
-		store.dispatch(getusercart());
-	}, []);
+	// useEffect(() => {
+	// 	store.dispatch(getusercart());
+	// }, []);
 	return (
 		<Provider store={store}>
 			<Router>

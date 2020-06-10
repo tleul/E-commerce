@@ -6,11 +6,13 @@ export const getusercart = () => async (dispatch) => {
 
 	try {
 		const userCart = await api.get(`/getusercart/${userID}`);
-
-		dispatch({
-			type: GETUSERCART,
-			payload: userCart.data,
-		});
+		if (localStorage.getItem('user')) {
+			console.log(userCart.data);
+			dispatch({
+				type: GETUSERCART,
+				payload: userCart.data,
+			});
+		}
 	} catch (error) {
 		dispatch({
 			type: EMPTYCART,

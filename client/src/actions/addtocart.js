@@ -23,3 +23,26 @@ export const addtocart = (id) => async (dispatch) => {
 		console.log(error);
 	}
 };
+
+export const updateQuantity = (id, item) => async (dispatch) => {
+	console.log('coming');
+	try {
+		const userId = localStorage.getItem('user');
+
+		const body = { user: userId, updateItem: item };
+
+		const res = await api.put(`/addtocart/${id}`, body);
+		if (!localStorage.getItem('user')) {
+			localStorage.setItem('user', res.data.userId);
+		}
+		console.log(res);
+		dispatch({
+			type: ADDTOCART,
+			payload: res.data,
+		});
+
+		// dispatch(getusercart());
+	} catch (error) {
+		console.log(error);
+	}
+};
