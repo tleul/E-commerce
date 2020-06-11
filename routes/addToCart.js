@@ -35,8 +35,9 @@ router.post('/:id', async (req, res) => {
 				qty: qtyInc,
 				totalPrice: user.cart[itemIndex].unitprice * qtyInc,
 			};
-			user.cart.splice(itemIndex, 1);
-			user.cart.push(userItem);
+			// user.cart.splice(itemIndex, 1);
+			// user.cart.push(userItem);
+			user.cart.splice(itemIndex, 1, userItem);
 			const userItemUpdate = await user.save();
 			console.log(userItemUpdate);
 			return res.json(userItemUpdate);
@@ -76,6 +77,17 @@ router.post('/:id', async (req, res) => {
 		console.log(user);
 		return res.json(newUsercart);
 	}
+});
+router.put('/:id', async (req, res) => {
+	const user = await User.findOne({ userId: req.body.user });
+	console.log(user);
+	const removeIndex = user.cart
+		.map((item) => item._id)
+		.indexOf(req.params.id);
+
+	user.cart.splice(removeIndex, 1);
+	const updateItem = await user.save();
+	return res.json(updateItem);
 });
 
 // router.put('/:id', async (req, res) => {
