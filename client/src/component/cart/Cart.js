@@ -8,7 +8,24 @@ const Cart = ({ getusercart, loading, userBucket: { cart } }) => {
 		getusercart();
 		console.log('run');
 	}, []);
+	// const addQty = (e, id) => {
+	// 	if (cart) {
+	// 		const check = cart.filter((item) => item._id == id);
 
+	// 		check[0].qty = check[0].qty + 1;
+
+	// 		updateQuantity(id, check);
+	// 	}
+	// };
+	// const minusQty = (e, id) => {
+	// 	if (cart) {
+	// 		const check = cart.filter((item) => item._id == id);
+
+	// 		check[0].qty = check[0].qty - 1;
+
+	// 		updateQuantity(id, check);
+	// 	}
+	// };
 	return (
 		loading && (
 			<Fragment>
@@ -78,7 +95,7 @@ const Cart = ({ getusercart, loading, userBucket: { cart } }) => {
 											</button>
 										</div>
 									</td>
-									<td>${useritem.unitprice}</td>
+									<td>${useritem.totalPrice}</td>
 								</tr>
 							))}
 
@@ -148,6 +165,7 @@ const Cart = ({ getusercart, loading, userBucket: { cart } }) => {
 Cart.propTypes = {
 	getusercart: PropTypes.func.isRequired,
 	userBucket: PropTypes.object.isRequired,
+
 	loading: PropTypes.bool,
 };
 const mapStateToProps = (state) => ({
