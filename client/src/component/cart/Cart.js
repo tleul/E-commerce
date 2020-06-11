@@ -3,29 +3,27 @@ import { connect } from 'react-redux';
 import { getusercart } from './../../actions/getUserCart';
 
 import { PropTypes } from 'prop-types';
-const Cart = ({ getusercart, loading, userBucket: { cart } }) => {
+import { addtocart } from '../../actions/addtocart';
+import { deleteItem } from '../../actions/addtocart';
+
+const Cart = ({
+	getusercart,
+	loading,
+	userBucket: { cart },
+	addtocart,
+	deleteItem,
+}) => {
 	useEffect(() => {
 		getusercart();
 		console.log('run');
 	}, []);
-	// const addQty = (e, id) => {
-	// 	if (cart) {
-	// 		const check = cart.filter((item) => item._id == id);
-
-	// 		check[0].qty = check[0].qty + 1;
-
-	// 		updateQuantity(id, check);
-	// 	}
-	// };
-	// const minusQty = (e, id) => {
-	// 	if (cart) {
-	// 		const check = cart.filter((item) => item._id == id);
-
-	// 		check[0].qty = check[0].qty - 1;
-
-	// 		updateQuantity(id, check);
-	// 	}
-	// };
+	const addItem = (e, id) => {
+		addtocart(id);
+		console.log('what');
+	};
+	const delItem = (e, id) => {
+		deleteItem(e);
+	};
 	return (
 		loading && (
 			<Fragment>
@@ -83,12 +81,18 @@ const Cart = ({ getusercart, loading, userBucket: { cart } }) => {
 												-
 											</button>
 											<button
+												onClick={(e) =>
+													addItem(e, useritem._id)
+												}
 												className='btn btn-mini'
 												type='button'>
 												{' '}
 												+{' '}
 											</button>
 											<button
+												onClick={(e) =>
+													delItem(e, useritem._id)
+												}
 												className='btn btn-mini btn-danger'
 												type='button'>
 												<span className='icon-remove'></span>
@@ -165,11 +169,14 @@ const Cart = ({ getusercart, loading, userBucket: { cart } }) => {
 Cart.propTypes = {
 	getusercart: PropTypes.func.isRequired,
 	userBucket: PropTypes.object.isRequired,
-
+	addtocart: PropTypes.func.isRequired,
 	loading: PropTypes.bool,
+	deleteItem: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
 	userBucket: state.cart.usercart,
 	loading: state.cart.loading,
 });
-export default connect(mapStateToProps, { getusercart })(Cart);
+export default connect(mapStateToProps, { getusercart, addtocart, deleteItem })(
+	Cart,
+);

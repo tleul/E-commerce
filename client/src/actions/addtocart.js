@@ -1,4 +1,4 @@
-import { ADDTOCART } from './type';
+import { ADDTOCART, DELETEITEM } from './type';
 import api from '../api/api';
 import { getusercart } from './getUserCart';
 
@@ -24,21 +24,17 @@ export const addtocart = (id) => async (dispatch) => {
 	}
 };
 
-// export const updateQuantity = (id, userId) => async (dispatch) => {
-// 	console.log('coming');
-// 	try {
-// 		const body = { user: userId };
+export const deleteItem = (id) => async (dispatch) => {
+	try {
+		const userId = localStorage.getItem('user');
 
-// 		const res = await api.put(`/addtocart/${id}`, body);
+		const body = { user: userId };
 
-// 		console.log(res);
-// 		dispatch({
-// 			type: ADDTOCART,
-// 			payload: res.data,
-// 		});
-
-// 		dispatch(getusercart());
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// };
+		const res = await api.put(`/addtocart/${id}`, body);
+		dispatch({
+			type: DELETEITEM,
+			payload: res.data,
+		});
+		dispatch(getusercart());
+	} catch (error) {}
+};
