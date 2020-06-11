@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getProducts } from './../../actions/addProducts';
-import { updateQuantity } from './../../actions/addtocart';
+
 import { addtocart } from './../../actions/addtocart';
 
 const Products = ({
@@ -13,21 +13,14 @@ const Products = ({
 	loading,
 	addtocart,
 	userBucket,
-	updateQuantity,
 }) => {
 	useEffect(() => {
 		getProducts();
 	}, []);
 
 	const additem = (id) => {
-		if (userBucket.cart) {
-			const check = userBucket.cart.filter((item) => item._id == id);
-			check[0].qty = check[0].qty + 1;
-			console.log(check);
-			updateQuantity(id, check);
-		}
+		addtocart(id);
 	};
-
 	return (
 		loading && (
 			<Fragment>
@@ -112,7 +105,7 @@ Products.propTypes = {
 	getProducts: PropTypes.func.isRequired,
 	productList: PropTypes.array,
 	loading: PropTypes.bool.isRequired,
-	updateQuantity: PropTypes.func.isRequired,
+
 	addtocart: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
@@ -123,5 +116,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
 	getProducts,
 	addtocart,
-	updateQuantity,
 })(Products);
