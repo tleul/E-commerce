@@ -1,6 +1,13 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-const Navbar = () => {
+import { connect } from 'react-redux';
+import { getusercart } from './../../actions/getUserCart';
+import { PropTypes } from 'prop-types';
+const Navbar = ({ getusercart, userBucket, loading }) => {
+	useEffect(() => {
+		getusercart();
+	}, [getusercart]);
+
 	return (
 		<Fragment>
 			<div className='navbar navbar-inverse navbar-fixed-top'>
@@ -36,11 +43,44 @@ const Navbar = () => {
 								us
 							</Link>
 							<Link to='/cart'>
-								<span className='icon-shopping-cart'></span> 2
+								<span className='icon-shopping-cart'></span>{' '}
+								{loading && userBucket.cart.length}
 								Item(s) -{' '}
 								<span className='badge badge-warning'>
 									{' '}
-									$448.42
+									$
+									{loading &&
+										userBucket.cart.reduce(
+											(acc, item) => acc + item.unitprice,
+											0,
+										) +
+											userBucket.cart.reduce(
+												(acc, item) =>
+													acc + item.unitprice,
+												0,
+											) -
+											0.8 *
+												userBucket.cart.reduce(
+													(acc, item) =>
+														acc + item.unitprice,
+													0,
+												)}
+									{/* {loading &&
+										userBucket.reduce(
+											(acc, item) => acc + item.unitprice,
+											0,
+										) +
+											userBucket.reduce(
+												(acc, item) =>
+													acc + item.unitprice,
+												0,
+											) -
+											0.8 *
+												userBucket.reduce(
+													(acc, item) =>
+														acc + item.unitprice,
+													0,
+												)} */}
 								</span>
 							</Link>
 						</div>
@@ -50,5 +90,14 @@ const Navbar = () => {
 		</Fragment>
 	);
 };
+Navbar.propTypes = {
+	userBucket: PropTypes.object,
 
-export default Navbar;
+	getusercart: PropTypes.func.isRequired,
+	loading: PropTypes.bool.isRequired,
+};
+const mapStateToProps = (state) => ({
+	userBucket: state.cart.usercart,
+	loading: state.cart.loading,
+});
+export default connect(mapStateToProps, { getusercart })(Navbar);

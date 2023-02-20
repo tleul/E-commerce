@@ -5,6 +5,10 @@ const app = express();
 dbConnect();
 app.use(express.json({ extended: false }));
 app.use((req, res, next) => {
+	res.header(
+		'Access-Control-Allow-Methods',
+		'PUT, POST, GET, DELETE, OPTIONS',
+	);
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header(
 		'Access-Control-Allow-Headers',
@@ -18,6 +22,8 @@ app.get('/', (req, res) => {
 });
 app.use('/api/addproduct', require('./routes/addProducts'));
 app.use('/api/getproduct', require('./routes/getProducts'));
+app.use('/api/addtocart', require('./routes/addToCart'));
+app.use('/api/getusercart', require('./routes/getUserCart'));
 // app.use('/addcart', require('./routes/addToCart'));
 
 PORT = process.env.PORT || 5000;

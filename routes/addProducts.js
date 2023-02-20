@@ -4,6 +4,10 @@ const aws = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const multer = require('multer');
 const path = require('path');
+const config = require('config');
+const accessKey = config.get('accessKeyId');
+const seceretAcsess = config.get('secretAccessKey');
+const bucket = config.get('Bucket');
 const Products = require('../models/Products');
 
 const router = express.Router();
@@ -11,15 +15,15 @@ const router = express.Router();
 //  PROFILE IMAGE STORING STARTS
 // aws-sdk npm
 const s3 = new aws.S3({
-	accessKeyId: '',
-	secretAccessKey: '',
-	Bucket: '',
+	accessKeyId: accessKey,
+	secretAccessKey: seceretAcsess,
+	Bucket: bucket,
 });
 // Single Upload
 const profileImgUpload = multer({
 	storage: multerS3({
 		s3: s3,
-		bucket: '',
+		bucket: 'leulbucket',
 		acl: 'public-read',
 		key: function (req, file, cb) {
 			cb(
@@ -63,8 +67,9 @@ function checkFileType(file, cb) {
 //POST REQUEST iTEM details
 router.post('/image', async (req, res) => {
 	// const { itemdescription, itemnameunitprice, itemname } = req.body;
-	const name = 'sutsomname';
+
 	profileImgUpload(req, res, async (error) => {
+		console.log(accessKey);
 		console.log('requestOkokok', req.file);
 		console.log('error', error);
 		if (error) {
