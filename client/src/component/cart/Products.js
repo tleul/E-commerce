@@ -1,26 +1,28 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import API from '../../api/api';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const Products = () => {
-	const [productList, setProductList] = useState({
-		loading: false,
-		products: null,
-	});
-	const getProducts = async () => {
-		const res = await API.get('/getproduct');
-		console.log(res.data);
-		setProductList({
-			loading: true,
-			products: res.data,
-		});
-	};
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { getProducts } from './../../actions/addProducts';
+
+import { addtocart } from './../../actions/addtocart';
+
+const Products = ({
+	getProducts,
+	productList,
+	loading,
+	addtocart,
+	userBucket,
+}) => {
 	useEffect(() => {
 		getProducts();
-		console.log(productList);
 	}, []);
+
+	const additem = (id) => {
+		addtocart(id);
+	};
 	return (
-		productList.loading && (
+		loading && (
 			<Fragment>
 				<br />
 				<br />
@@ -29,9 +31,9 @@ const Products = () => {
 					<h3>Our Products </h3>
 					<div className='row-fluid'>
 						<ul className='thumbnails'>
-							{productList.loading &&
-								productList.products.map((item) => (
-									<li key={item._id} className='span4'>
+							{loading &&
+								productList.map((item) => (
+									<li key={item._id} className='span2'>
 										<div className='thumbnail'>
 											<Link
 												to='#'
@@ -45,19 +47,29 @@ const Products = () => {
 											</Link>
 											<Link to='#'>
 												<img
+													height='200'
+													width='100'
 													src={item.itemImageURL}
 													alt=''
 												/>
 											</Link>
 											<div className='caption cntr'>
 												<p>{item.itemname}</p>
+
 												<p>
-													<strong> </strong>
+													<strong>
+														{' '}
+														unit price: $
+														{item.unitprice}
+													</strong>
 												</p>
 												<h4>
 													<Link
 														className='shopBtn'
 														to='#'
+														onClick={(e) =>
+															additem(item._id, e)
+														}
 														title='add to cart'>
 														{' '}
 														Add to cart{' '}
@@ -88,4 +100,20 @@ const Products = () => {
 		)
 	);
 };
-export default Products;
+Products.propTypes = {
+	userBucket: PropTypes.object,
+	getProducts: PropTypes.func.isRequired,
+	productList: PropTypes.array,
+	loading: PropTypes.bool.isRequired,
+
+	addtocart: PropTypes.func.isRequired,
+};
+const mapStateToProps = (state) => ({
+	productList: state.products.products,
+	loading: state.products.loading,
+	userBucket: state.cart.usercart,
+});
+export default connect(mapStateToProps, {
+	getProducts,
+	addtocart,
+})(Products);
